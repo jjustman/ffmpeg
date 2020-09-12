@@ -6334,7 +6334,7 @@ enabled libdrm            && require_pkg_config libdrm libdrm xf86drm.h drmGetVe
 enabled libfdk_aac        && { check_pkg_config libfdk_aac fdk-aac "fdk-aac/aacenc_lib.h" aacEncOpen ||
                                { require libfdk_aac fdk-aac/aacenc_lib.h aacEncOpen -lfdk-aac &&
                                  warn "using libfdk without pkg-config"; } }
-enabled libdaa_ac4		  && require_headers dlb_decode_api.h
+enabled libdaa_ac4		  && require libdaa_ac4 dlb_decode_api.h dlb_decode_process ../libdaa/lib/android_armv8_float_neon/lib_daa_ac4dec_armv8_float_neon_release.a
 flite_extralibs="-lflite_cmu_time_awb -lflite_cmu_us_awb -lflite_cmu_us_kal -lflite_cmu_us_kal16 -lflite_cmu_us_rms -lflite_cmu_us_slt -lflite_usenglish -lflite_cmulex -lflite"
 enabled libflite          && require libflite "flite/flite.h" flite_init $flite_extralibs
 enabled fontconfig        && enable libfontconfig
