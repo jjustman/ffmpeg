@@ -1,10 +1,14 @@
  /*
  * AC4 decoder wrapper for libDAA
  *
+ *	note: WARNING: Disabled dash_demuxer because not all dependencies are satisfied: libxml2
+ *	apt-get install pkg-config libxml2-dev
  *
 
 
-./configure  --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
+./configure --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
+
+./configure --enable-debug=3   --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
  */
 
@@ -84,7 +88,7 @@ typedef struct DAAAC4DecContext {
 
       int                     current_sample;
 
-      dlb_decode_query_ip 	*p_queryip;
+      dlb_decode_query_ip 	p_queryip;
       auto_config_para_t 	a_auto_conf_para[ MAX_AUTO_CONFIG_PARA_SIZE ];
       int 					auto_mode_num;
       unsigned int   		framecompletecount;
@@ -689,15 +693,15 @@ static av_cold int daa_ac4_decode_init(AVCodecContext *avctx)
 
     /* initialize queryip depending on the input file*/
      memset( &s->p_queryip, 0, sizeof(dlb_decode_query_ip) );
-     s->p_queryip->output_datatype              =  DLB_BUFFER_SHORT_16;
-     s->p_queryip->input_bitstream_format       =  DLB_DECODE_INPUT_FORMAT_AC4;
+     s->p_queryip.output_datatype              =  DLB_BUFFER_SHORT_16;
+     s->p_queryip.input_bitstream_format       =  DLB_DECODE_INPUT_FORMAT_AC4;
 #ifdef JJ_AC4_USE_RAW_FRAME
-     s->p_queryip->input_bitstream_type         =  DLB_DECODE_INPUT_TYPE_AC4_RAW_FRAME;
+     s->p_queryip.input_bitstream_type         =  DLB_DECODE_INPUT_TYPE_AC4_RAW_FRAME;
 #else
-     s->p_queryip->input_bitstream_type         =  DLB_DECODE_INPUT_TYPE_AC4_SIMPLE_TRANSPORT;
+     s->p_queryip.input_bitstream_type         =  DLB_DECODE_INPUT_TYPE_AC4_SIMPLE_TRANSPORT;
 
 #endif
-     s->p_queryip->timescale                    =  48000; //by default..?
+     s->p_queryip.timescale                    =  48000; //by default..?
 
      /****************************************/
      /* Step 1: Call dlb_decode_query_info()*/
@@ -706,18 +710,18 @@ static av_cold int daa_ac4_decode_init(AVCodecContext *avctx)
      /****************************************/
 
      /* query the library to find out the version */
-     err = dlb_decode_query_info(s->p_queryip, &(s->query_info_op) );
+     err = dlb_decode_query_info(&s->p_queryip, &(s->query_info_op) );
      if (err) { return AVERROR_UNKNOWN; }
 
      /* display banner info (regardless of verbose mode) */
-     err = daa_ac4_displaybanner(s->p_queryip, &(s->query_info_op));
+     err = daa_ac4_displaybanner(&s->p_queryip, &(s->query_info_op));
      if (err) { return AVERROR_UNKNOWN; }
 
      /*********************************************/
      /* Step 2: Call dlb_decode_query_memory() */
      /********************************************/
      /* initialize query input parameters to zero */
-     err = dlb_decode_query_memory( s->p_queryip, &(s->query_mem_op) );
+     err = dlb_decode_query_memory( &s->p_queryip, &(s->query_mem_op) );
      if (err) { return AVERROR_UNKNOWN; }
 
      /* Allocate output buffers */
@@ -743,7 +747,7 @@ static av_cold int daa_ac4_decode_init(AVCodecContext *avctx)
      /***************************************/
      /* Step 3: Call dlb_decode_open()    */
      /***************************************/
-     err = dlb_decode_open( s->p_queryip, s->p_dechdl );
+     err = dlb_decode_open( &s->p_queryip, s->p_dechdl );
      if (err)
      {
     	 av_log(avctx, AV_LOG_ERROR, "dlb_decode_open failed with query_ip: %p, and dechdl: %p\n", s->p_queryip, s->p_dechdl);
