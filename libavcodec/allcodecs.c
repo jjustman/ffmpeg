@@ -715,6 +715,7 @@ extern AVCodec ff_libdav1d_decoder;
 extern AVCodec ff_libdavs2_decoder;
 extern AVCodec ff_libfdk_aac_encoder;
 extern AVCodec ff_libfdk_aac_decoder;
+extern AVCodec ff_libdaa_ac4_decoder;
 extern AVCodec ff_libgsm_encoder;
 extern AVCodec ff_libgsm_decoder;
 extern AVCodec ff_libgsm_ms_encoder;
