@@ -4,33 +4,7 @@
  *
 
 
- ./configure --enable-libdaa-ac4 --disable-decoders --enable-decoder=libdaa_ac4 --extra-cflags="-I../libdaa/include"
-
-disable-everything
-
-include static linkage for c6 instance build
-
-fails with wrong linker ordering
- 	 ./configure --disable-everything --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I../libdaa/include" --extra-ldflags="-L../libdaa/lib/android_armv8_float_neon/lib_daa_ac4dec_armv8_float_neon_release.a"
-
- ./configure  --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="../libdaa/lib/android_armv8_float_neon/lib_daa_ac4dec_armv8_float_neon_release.a"
-
-
-//(.text+0x533dc): undefined reference to `__fe_dfl_env'
-
-//jjustman-2020-09-12 - hack!                                                                                                                                                                                            \
-
-
-#include <fenv.h>
-
-#pragma STDC FENV_ACCESS ON
-
-
-
-./configure  --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="../libdaa/lib/android_armv8_float_neon/lib_daa_ac4dec_armv8_float_neon_release.a"
-
-
-
+./configure  --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
  */
 

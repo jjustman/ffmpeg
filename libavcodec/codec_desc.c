@@ -2511,6 +2511,13 @@ static const AVCodecDescriptor codec_descriptors[] = {
         .long_name = NULL_IF_CONFIG_SMALL("ATSC A/52A (AC-3)"),
         .props     = AV_CODEC_PROP_INTRA_ONLY | AV_CODEC_PROP_LOSSY,
     },
+	{
+		.id        = AV_CODEC_ID_AC4,
+		.type      = AVMEDIA_TYPE_AUDIO,
+		.name      = "ac4",
+		.long_name = NULL_IF_CONFIG_SMALL("AC-4)"),
+		.props     = AV_CODEC_PROP_INTRA_ONLY | AV_CODEC_PROP_LOSSY,
+	},
     {
         .id        = AV_CODEC_ID_DTS,
         .type      = AVMEDIA_TYPE_AUDIO,
