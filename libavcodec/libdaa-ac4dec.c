@@ -639,8 +639,7 @@ static av_cold int daa_ac4_decode_close(AVCodecContext *avctx)
 	}
 
 
-	av_free(&s->decoder_buffer);
-//    av_freep(&s->anc_buffer);
+	av_free(s->decoder_buffer);
 
     return 0;
 }
