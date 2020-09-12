@@ -621,25 +621,25 @@ static av_cold int daa_ac4_decode_close(AVCodecContext *avctx)
 		/* close subroutine memory           */
 		dlb_decode_close(s->p_dechdl);
 		/* free subroutine memory */
-		av_freep(s->p_dechdl);
+		av_free(s->p_dechdl);
 		s->p_dechdl = NULL;
 	}
 
 	/* Free PCM buffers */
 	if (s->decoder_buffer)
 	{
-		av_freep(s->decoder_buffer);
+		av_free(s->decoder_buffer);
 		s->decoder_buffer = NULL;
 	}
 
 	/* Free data buffers */
 	if (s->outputbuf.ppdata)
 	{
-		av_freep(s->outputbuf.ppdata);
+		av_free(s->outputbuf.ppdata);
 	}
 
 
-    av_freep(&s->decoder_buffer);
+	av_free(&s->decoder_buffer);
 //    av_freep(&s->anc_buffer);
 
     return 0;
