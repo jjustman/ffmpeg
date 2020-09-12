@@ -6,9 +6,10 @@
  *
 
 
-./configure --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
+ *   old 2020-09-12 - ./configure --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
-./configure --enable-debug=3 --optflags="-O0" --disable-stripping --disable-optimizations   --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
+baseline:
+./configure --enable-debug=3 --optflags="-O0" --disable-stripping --disable-optimizations  --enable-gpl --enable-nonfree  --enable-libx264   --enable-encoder=libx264  --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
  */
 
@@ -919,7 +920,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     unsigned int bytesconsumed;
     int framecomplete, err;
-    signed long long input_timestamp = 0;
+    signed long long input_timestamp = avpkt->pts;
 
 #ifdef JJ_AC4_USE_RAW_FRAME
     /* add buffer bytes to subroutine */
