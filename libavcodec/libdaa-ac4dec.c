@@ -8,7 +8,7 @@
 
 ./configure --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
-./configure --enable-debug=3   --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
+./configure --enable-debug=3 --optflags="-O0" --disable-stripping --disable-optimizations   --enable-libxml2     --enable-demuxer=dash --enable-muxer=dash --enable-libdaa-ac4 --enable-decoder=libdaa_ac4 --extra-cflags="-I`pwd`/../libdaa/include" --extra-libs="-L`pwd`/../libdaa/lib/android_armv8_float_neon/"
 
  */
 
@@ -1031,7 +1031,6 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
     *got_frame_ptr = 1;
 
     ret = avpkt->size - bytesconsumed;
-    ret = 0;
 
 end:
     return ret;
