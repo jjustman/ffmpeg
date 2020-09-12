@@ -682,7 +682,7 @@ static int daa_ac4_displaybanner(
     return (ERR_NO_ERROR);
 }
 
-#define JJ_AC4_USE_RAW_FRAME
+// #define JJ_AC4_USE_RAW_FRAME
 static av_cold int daa_ac4_decode_init(AVCodecContext *avctx)
 {
     DAAAC4DecContext *s = avctx->priv_data;
@@ -951,9 +951,9 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 	header[2]  = 0xFF;
 	header[3]  = 0xFF;
 	/* AC-4 frame size */
-	header[4]  = (unsigned char)((sample.size >> 16) & 0xFF);
-	header[5]  = (unsigned char)((sample.size >> 8) & 0xFF);
-	header[6]  = (unsigned char)((sample.size >> 0) & 0xFF);
+	header[4]  = (unsigned char)((avpkt->size >> 16) & 0xFF);
+	header[5]  = (unsigned char)((avpkt->size >> 8) & 0xFF);
+	header[6]  = (unsigned char)((avpkt->size >> 0) & 0xFF);
 
 	ac4_sync_word_and_data_size = avpkt->size + 7;
 
@@ -964,7 +964,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
 	/* add buffer bytes to subroutine */
 	err = dlb_decode_addbytes
-		  (s->p_dechdl,
+		  (s->p_dechdl
 		   , ac4_sync_word_and_data
 		   , ac4_sync_word_and_data_size
 		   , input_timestamp //0
