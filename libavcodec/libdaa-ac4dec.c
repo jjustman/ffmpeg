@@ -1092,7 +1092,9 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     *got_frame_ptr = 1;
 
+    //ret = avpkt->size - bytesconsumed;
     ret = avpkt->size - bytesconsumed;
+
     frame->pkt_duration = av_rescale_q(frame->nb_samples, (AVRational){1, avctx->sample_rate},
             avctx->time_base);
 
