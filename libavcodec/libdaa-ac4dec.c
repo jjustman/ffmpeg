@@ -499,6 +499,7 @@ static int get_stream_info(AVCodecContext *avctx)
         return AVERROR_UNKNOWN;
     }
     avctx->sample_rate = s->samplerate;
+
     //todo - check data_type - p_pcmchbfds->data_type;
     int sample_depth = 0;
     switch (s->outputbuf.data_type) {
@@ -514,6 +515,13 @@ static int get_stream_info(AVCodecContext *avctx)
     }
 
     avctx->frame_size  = s->outnchans * s->nsamples * sample_depth;
+    av_log(avctx, AV_LOG_INFO, "get_stream_info: avctx->frame_size: %d, from s->outnchans: %d (s->outputbuf.nchannel), s->nsamples: %d, sample_depth: %d\n",
+    		avctx->frame_size,
+			s->outnchans,
+			s->outputbuf.nchannel,
+			s->nsamples,
+			sample_depth
+    		);
 
 //
 //    for (i = 0; i < info->numChannels; i++) {
