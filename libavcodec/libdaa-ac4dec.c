@@ -1096,12 +1096,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
     frame->pkt_duration = av_rescale_q(frame->nb_samples, (AVRational){1, avctx->sample_rate},
             avctx->time_base);
 
-    frame->pts = av_rescale_q(s->total_frames_decoded, (AVRational){1, avctx->sample_rate},
-            avctx->time_base);
-
-
-
-    av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: ret: %d, frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
+    av_log(avctx, AV_LOG_DEBUG, "daa_ac4_decode_frame: ret: %d, frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
     			ret,
     			frame->nb_samples,
     			avctx->channels,
