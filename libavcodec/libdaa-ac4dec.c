@@ -1034,8 +1034,9 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     int avctx_written_frame_size = avctx->channels * avctx->frame_size *
             av_get_bytes_per_sample(avctx->sample_fmt);
-	av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: frame->nb_samples: %d, avctx->frame_size: %d, writing to avframe size: %d",
+	av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
 			frame->nb_samples,
+			avctx->channels,
 			avctx->frame_size,
 			avctx_written_frame_size);
 
