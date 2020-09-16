@@ -1029,7 +1029,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
             av_get_bytes_per_sample(avctx->sample_fmt);
 	av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: writing to avframe size: %d", avctx_written_frame_size);
 
-    memcpy(frame->extended_data[0], s->decoder_buffer, avctx_written_frame_size));
+    memcpy(frame->extended_data[0], s->decoder_buffer, avctx_written_frame_size);
 
     *got_frame_ptr = 1;
 
