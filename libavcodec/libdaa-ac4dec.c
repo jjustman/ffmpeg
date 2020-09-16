@@ -608,7 +608,7 @@ static int get_stream_info(AVCodecContext *avctx)
 //    if (ch_error)
 //        avctx->channel_layout = 0;
 //    else
-    ch_layout |= AV_CH_LAYOUT_STEREO;
+    ch_layout = AV_CH_LAYOUT_STEREO;
 
     avctx->channel_layout = ch_layout;
 
