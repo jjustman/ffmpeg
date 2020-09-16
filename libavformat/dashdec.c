@@ -1654,6 +1654,8 @@ static struct fragment *get_current_fragment(struct representation *pls)
             pls->cur_seq_no = calc_cur_seg_no(pls->parent, pls);
         } else if (pls->cur_seq_no > max_seq_no) {
             av_log(pls->parent, AV_LOG_VERBOSE, "new fragment: min[%"PRId64"] max[%"PRId64"], playlist %d\n", min_seq_no, max_seq_no, (int)pls->rep_idx);
+            //jjustman-2020-09-16 - clamp to our max_seq_no so we don't walk off live playlists
+            pls->cur_seq_no = max_seq_no;
         }
         seg = av_mallocz(sizeof(struct fragment));
         if (!seg) {
@@ -1820,6 +1822,8 @@ restart:
                 goto end;
             }
             av_log(v->parent, AV_LOG_WARNING, "Failed to open fragment of playlist %d\n", v->rep_idx);
+            //jjustman-2020-09-16 - don't immediately increment, as we will run off a live playlist
+            av_usleep(100000);
             v->cur_seq_no++;
             goto restart;
         }
