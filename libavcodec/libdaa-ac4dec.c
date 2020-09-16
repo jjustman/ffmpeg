@@ -1069,7 +1069,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
     if ((ret = get_stream_info(avctx)) < 0)
         goto end;
     frame->nb_samples = avctx->frame_size;
-    total_frames_decoded += avctx->nb_samples;
+    s->total_frames_decoded += avctx->nb_samples;
 
     if ((ret = ff_get_buffer(avctx, frame, 0)) < 0)
         goto end;
