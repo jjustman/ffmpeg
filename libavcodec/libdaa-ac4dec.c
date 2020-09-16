@@ -610,6 +610,9 @@ static int get_stream_info(AVCodecContext *avctx)
 //    else
     ch_layout = AV_CH_LAYOUT_STEREO;
 
+    int channel_layout_nb = av_get_channel_layout_nb_channels(ch_layout);
+	av_log(avctx, AV_LOG_INFO, "get_stream_info: channel layout: %d, channel_layout_nb: %d\n", ch_layout, channel_layout_nb);
+
     avctx->channel_layout = ch_layout;
 
     avctx->channels = s->outputbuf.nchannel;
@@ -805,6 +808,43 @@ static av_cold int daa_ac4_decode_init(AVCodecContext *avctx)
      /* !!!!!! This can be done before each decode() calling */
 
      s->outputbuf.ppdata[0] = s->decoder_buffer;
+
+     if (avctx->request_channel_layout > 0 &&
+             avctx->request_channel_layout != AV_CH_LAYOUT_NATIVE) {
+    	 int downmix_channels = -1;
+
+    	 switch (avctx->request_channel_layout) {
+             case AV_CH_LAYOUT_STEREO:
+             case AV_CH_LAYOUT_STEREO_DOWNMIX:
+                 downmix_channels = 2;
+                 break;
+             case AV_CH_LAYOUT_MONO:
+                 downmix_channels = 1;
+                 break;
+             default:
+                 av_log(avctx, AV_LOG_WARNING, "Invalid request_channel_layout\n");
+                 break;
+             }
+
+    		av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_init: downmix_channels is: %d", downmix_channels);
+
+//             if (downmix_channels != -1) {
+//                 if (aacDecoder_SetParam(s->handle, AAC_PCM_MAX_OUTPUT_CHANNELS,
+//                                         downmix_channels) != AAC_DEC_OK) {
+//                    av_log(avctx, AV_LOG_WARNING, "Unable to set output channels in the decoder\n");
+//                 } else {
+//                    s->anc_buffer = av_malloc(DMX_ANC_BUFFSIZE);
+//                    if (!s->anc_buffer) {
+//                        av_log(avctx, AV_LOG_ERROR, "Unable to allocate ancillary buffer for the decoder\n");
+//                        return AVERROR(ENOMEM);
+//                    }
+//                    if (aacDecoder_AncDataInit(s->handle, s->anc_buffer, DMX_ANC_BUFFSIZE)) {
+//                        av_log(avctx, AV_LOG_ERROR, "Unable to register downmix ancillary buffer in the decoder\n");
+//                        return AVERROR_UNKNOWN;
+//                    }
+//                 }
+//             }
+         }
 
 //
 //    s->handle = aacDecoder_Open(avctx->extradata_size ? TT_MP4_RAW : TT_MP4_ADTS, 1);
