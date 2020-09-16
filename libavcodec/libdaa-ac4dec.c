@@ -93,6 +93,7 @@ typedef struct DAAAC4DecContext {
       auto_config_para_t 	a_auto_conf_para[ MAX_AUTO_CONFIG_PARA_SIZE ];
       int 					auto_mode_num;
       unsigned int   		framecompletecount;
+      unsigned int			total_frames_decoded;
 
 
       int numofaudioin;                               /* Number of audio stream inputs (1 or 2)  */
@@ -1068,6 +1069,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
     if ((ret = get_stream_info(avctx)) < 0)
         goto end;
     frame->nb_samples = avctx->frame_size;
+    total_frames_decoded += avctx->nb_samples;
 
     if ((ret = ff_get_buffer(avctx, frame, 0)) < 0)
         goto end;
@@ -1092,7 +1094,13 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     ret = avpkt->size - bytesconsumed;
     frame->pkt_duration = av_rescale_q(frame->nb_samples, (AVRational){1, avctx->sample_rate},
-            avctx->time_base));
+            avctx->time_base);
+
+    frame->pts = av_rescale_q(s->total_frames_decoded, (AVRational){1, avctx->sample_rate},
+            avctx->time_base);
+
+
+
     av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: ret: %d, frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
     			ret,
     			frame->nb_samples,
