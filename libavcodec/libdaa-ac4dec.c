@@ -611,7 +611,7 @@ static int get_stream_info(AVCodecContext *avctx)
     ch_layout = AV_CH_LAYOUT_STEREO;
 
     int channel_layout_nb = av_get_channel_layout_nb_channels(ch_layout);
-	av_log(avctx, AV_LOG_INFO, "get_stream_info: channel layout: %d, channel_layout_nb: %d\n", ch_layout, channel_layout_nb);
+	av_log(avctx, AV_LOG_TRACE, "get_stream_info: channel layout: %d, channel_layout_nb: %d\n", ch_layout, channel_layout_nb);
 
     avctx->channel_layout = ch_layout;
 
@@ -1076,7 +1076,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
                                    (AVRational){1, avctx->sample_rate},
                                    avctx->time_base);
 
-	av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: pts: %d, output_delay: %d, sample_rate: %d, time_base: %d",
+	av_log(avctx, AV_LOG_TRACE, "daa_ac4_decode_frame: pts: %d, output_delay: %d, sample_rate: %d, time_base: %d",
 			frame->pts,
 			s->output_delay,
 			avctx->sample_rate,
@@ -1085,7 +1085,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     int avctx_written_frame_size = avctx->channels * avctx->frame_size *
             av_get_bytes_per_sample(avctx->sample_fmt);
-	av_log(avctx, AV_LOG_INFO, "daa_ac4_decode_frame: frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
+	av_log(avctx, AV_LOG_TRACE, "daa_ac4_decode_frame: frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
 			frame->nb_samples,
 			avctx->channels,
 			avctx->frame_size,
