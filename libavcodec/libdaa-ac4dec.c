@@ -515,8 +515,9 @@ static int get_stream_info(AVCodecContext *avctx)
     }
 
     avctx->frame_size  = s->nsamples; //s->outnchans * s->nsamples * sample_depth;
-    av_log(avctx, AV_LOG_TRACE, "get_stream_info: avctx->frame_size: %d, from s->outnchans: %d (s->outputbuf.nchannel: %d), s->nsamples: %d, sample_depth: %d\n",
+    av_log(avctx, AV_LOG_TRACE, "get_stream_info: avctx->frame_size: %d, sample_rate: %d, from s->outnchans: %d (s->outputbuf.nchannel: %d), s->nsamples: %d, sample_depth: %d\n",
     		avctx->frame_size,
+			avctx->sample_rate,
 			s->outnchans,
 			s->outputbuf.nchannel,
 			s->nsamples,
