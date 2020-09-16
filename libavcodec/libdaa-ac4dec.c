@@ -1019,6 +1019,7 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 		   , &bytesconsumed
 		   , &framecomplete);
 
+
 	/* check error */
 	if (err)
 	{
@@ -1026,6 +1027,8 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 		ret = err;
 		goto end;
 	}
+
+	bytesconsumed -= 7; //remove sync frame header
 #endif
 
 	err = dlb_decode_process(
