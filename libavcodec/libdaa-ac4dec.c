@@ -1074,6 +1074,8 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
     if ((ret = get_stream_info(avctx)) < 0)
         goto end;
     frame->nb_samples = avctx->frame_size;
+    frame->sample_rate = avctx->sample_rate;
+
     s->total_frames_decoded += frame->nb_samples;
 
     if ((ret = ff_get_buffer(avctx, frame, 0)) < 0)
@@ -1090,7 +1092,6 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 			avctx->sample_rate,
 			avctx->time_base);
 
-
     int avctx_written_frame_size = avctx->channels * avctx->frame_size *
             av_get_bytes_per_sample(avctx->sample_fmt);
     memcpy(frame->extended_data[0], s->decoder_buffer, avctx_written_frame_size);
@@ -1099,9 +1100,9 @@ static int daa_ac4_decode_frame(AVCodecContext *avctx, void *data,
 
     //ret = avpkt->size - bytesconsumed;
     ret = bytesconsumed;
-
-    frame->pkt_duration = av_rescale_q(frame->nb_samples, (AVRational){1, avctx->sample_rate},
-            avctx->time_base);
+//
+//    frame->pkt_duration = av_rescale_q(frame->nb_samples, (AVRational){1, avctx->sample_rate},
+//            avctx->time_base);
 
     av_log(avctx, AV_LOG_DEBUG, "daa_ac4_decode_frame: ret: %d, frame->nb_samples: %d, avctx->channels: %d, avctx->frame_size: %d, writing to avframe size: %d",
     			ret,
